@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestPochtaRUApi", "TestPochtaRUApi\TestPochtaRUApi.csproj", "{FABDB299-0A92-4F23-83CF-2027CBEA0136}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FABDB299-0A92-4F23-83CF-2027CBEA0136}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FABDB299-0A92-4F23-83CF-2027CBEA0136}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FABDB299-0A92-4F23-83CF-2027CBEA0136}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FABDB299-0A92-4F23-83CF-2027CBEA0136}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E2287AC-1431-4F34-A458-9FA06D8AF380}
+	EndGlobalSection
+EndGlobal
