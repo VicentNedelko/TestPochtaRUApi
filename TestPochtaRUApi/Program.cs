@@ -9,12 +9,15 @@ namespace TestPochtaRUApi
 {
     class Program
     {
+        
         static async System.Threading.Tasks.Task Main(string[] args)
         {
             Console.Write("Enter address : ");
             string address = Console.ReadLine();
+            Uri baseURI = new Uri("https://otpravka-api.pochta.ru");
+            Uri uri = new Uri(baseURI, "postoffice/1.0/by-address");
 
-            var builder = new UriBuilder("https://otpravka-api.pochta.ru/postoffice/1.0/by-address")
+            var builder = new UriBuilder(uri)
             {
                 Port = -1
             };
@@ -38,7 +41,7 @@ namespace TestPochtaRUApi
             using var response = await client.SendAsync(request);
             var index = JsonConvert.DeserializeObject<IndexResponse>(
                 response.Content.ReadAsStringAsync().Result);
-            Console.WriteLine($"postoffices = {index.postoffices.Count}");
+            
             if(index.postoffices != null)
             {
                 foreach(var p in index.postoffices)
@@ -49,38 +52,63 @@ namespace TestPochtaRUApi
 
             //
 
-            var addressToDetailed_1 = new RequestDetalization
-            {
-                id = "adr 1",
-                OriginalAddress = "Загородное ш., 7а, Москва",
-            };
+            //var addressToDetailed_1 = new RequestDetalization
+            //{
+            //    id = "adr 1",
+            //    OriginalAddress = "Загородное шоссе, 7а, Москва",
+            //};
 
-            var addressToDetailed_2 = new RequestDetalization
-            {
-                id = "adr 2",
-                OriginalAddress = "г. Новосибирск, ул. Жуковского, 100/4",
-            };
+            //var addressToDetailed_2 = new RequestDetalization
+            //{
+            //    id = "adr 2",
+            //    OriginalAddress = "Москва, корп. 1, Севастопольский пр., 42",
+            //};
 
-            var listAddresses = new List<RequestDetalization>();
-            listAddresses.Add(addressToDetailed_1);
+            //var listAddresses = new List<RequestDetalization>();
+            //listAddresses.Add(addressToDetailed_1);
+            //listAddresses.Add(addressToDetailed_2);
 
-            var serializedRequest = JsonConvert.SerializeObject(listAddresses);
-            var content = new StringContent(serializedRequest, Encoding.UTF8, "application/json");
-            var requestDetailes = new HttpRequestMessage
+            //var serializedRequest = JsonConvert.SerializeObject(listAddresses);
+            //var content = new StringContent(serializedRequest, Encoding.UTF8, "application/json");
+            //var requestDetailes = new HttpRequestMessage
+            //{
+            //    Method = HttpMethod.Post,
+            //    RequestUri = new Uri(baseURI, "1.0/clean/address"),
+            //    Headers =
+            //    {
+            //        { "Authorization", "AccessToken x9nATG1tt3do9ud8QgHcFp2JdyZP8RyL" },
+            //        { "X-User-Authorization","Basic  eS1rdW5hc2hAeWFuZGV4LnJ1OjFxYXohUUFa" },
+            //    },
+            //    Content = content,
+            //};
+
+            //using var responseDetalization = await client.SendAsync(requestDetailes);
+            //var detalization = JsonConvert.DeserializeObject<List<ResponseDetalization>>(
+            //    responseDetalization.Content.ReadAsStringAsync().Result);
+            
+
+
+            //
+
+            var rateRequest = new RequestRate();
+            var jsonRate = JsonConvert.SerializeObject(rateRequest);
+            var contentRate = new StringContent(jsonRate, Encoding.UTF8, "application/json");
+
+            var requestRate = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri("https://otpravka-api.pochta.ru/1.0/clean/address"),
+                RequestUri = new Uri(baseURI, "1.0/tariff"),
                 Headers =
                 {
                     { "Authorization", "AccessToken x9nATG1tt3do9ud8QgHcFp2JdyZP8RyL" },
                     { "X-User-Authorization","Basic  eS1rdW5hc2hAeWFuZGV4LnJ1OjFxYXohUUFa" },
                 },
-                Content = content,
+                Content = contentRate,
             };
 
-            using var responseDetalization = await client.SendAsync(requestDetailes);
-            var detalization = JsonConvert.DeserializeObject<List<ResponseDetalization>>(
-                responseDetalization.Content.ReadAsStringAsync().Result);
+            using var responseRate = await client.SendAsync(requestRate);
+            var rate = JsonConvert.DeserializeObject<ResponseRate>(
+                responseRate.Content.ReadAsStringAsync().Result);
             Console.ReadKey();
         }
 
