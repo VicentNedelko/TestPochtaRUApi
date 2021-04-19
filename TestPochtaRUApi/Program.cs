@@ -47,8 +47,26 @@ namespace TestPochtaRUApi
                 }
             }
 
+            //
 
-            var requestDetalization = new HttpRequestMessage
+            var addressToDetailed_1 = new RequestDetalization
+            {
+                id = "adr 1",
+                OriginalAddress = "Загородное ш., 7а, Москва",
+            };
+
+            var addressToDetailed_2 = new RequestDetalization
+            {
+                id = "adr 2",
+                OriginalAddress = "г. Новосибирск, ул. Жуковского, 100/4",
+            };
+
+            var listAddresses = new List<RequestDetalization>();
+            listAddresses.Add(addressToDetailed_1);
+
+            var serializedRequest = JsonConvert.SerializeObject(listAddresses);
+            var content = new StringContent(serializedRequest, Encoding.UTF8, "application/json");
+            var requestDetailes = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri("https://otpravka-api.pochta.ru/1.0/clean/address"),
@@ -57,16 +75,12 @@ namespace TestPochtaRUApi
                     { "Authorization", "AccessToken x9nATG1tt3do9ud8QgHcFp2JdyZP8RyL" },
                     { "X-User-Authorization","Basic  eS1rdW5hc2hAeWFuZGV4LnJ1OjFxYXohUUFa" },
                 },
-                Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
-                    { "id", "adr 1" },
-                    { "original-address", "Москва, Варшавское шоссе, 37" },
-                }),
+                Content = content,
             };
 
-            using var responseDetalization = await client.SendAsync(requestDetalization);
-            var detalization = JsonConvert.DeserializeObject<ResponseDetalization>(
-                response.Content.ReadAsStringAsync().Result);
+            using var responseDetalization = await client.SendAsync(requestDetailes);
+            var detalization = JsonConvert.DeserializeObject<List<ResponseDetalization>>(
+                responseDetalization.Content.ReadAsStringAsync().Result);
             Console.ReadKey();
         }
 
